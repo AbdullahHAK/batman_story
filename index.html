@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Do We Fall?</title>
+  <meta name="description" content="A scroll-driven fan tribute to Batman: four falls and one rise." />
+  <meta name="theme-color" content="#0b0b0c" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath fill='%23e9e6df' d='M50 16L53 16L55 7L57 17Q66 18 70 14Q82 10 98 6Q92 14 97 24Q88 22 84 32Q76 26 68 38Q58 36 50 56Q42 36 32 38Q24 26 16 32Q12 22 3 24Q8 14 2 6Q18 10 30 14Q34 18 43 17L45 7L47 16Z'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=gambetta@400,401,500,501&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- reusable bat symbol -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="bat" viewBox="0 0 100 60">
+      <path d="M50 16L53 16L55 7L57 17Q66 18 70 14Q82 10 98 6Q92 14 97 24Q88 22 84 32Q76 26 68 38Q58 36 50 56Q42 36 32 38Q24 26 16 32Q12 22 3 24Q8 14 2 6Q18 10 30 14Q34 18 43 17L45 7L47 16Z" />
+    </symbol>
+  </svg>
+
+  <div class="atmos" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <canvas id="rain" class="fx-canvas" aria-hidden="true"></canvas>
+  <canvas id="bats" class="fx-canvas" aria-hidden="true"></canvas>
+
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor-ring"><span class="cursor-label"></span></div>
+    <div class="cursor-dot"></div>
+  </div>
+
+  <!-- PRELOADER -->
+  <div id="preloader" aria-hidden="true">
+    <div class="pre-shutter pre-top"></div>
+    <div class="pre-shutter pre-bottom"></div>
+    <div class="pre-inner">
+      <svg class="pre-bat"><use href="#bat" /></svg>
+      <p class="pre-line mono">&nbsp;</p>
+      <div class="pre-count mono"><span>000</span><i></i></div>
+      <div class="pre-enter" hidden>
+        <button type="button" class="pre-btn pre-btn--main" data-magnetic data-sound="on" data-cursor="ENTER">Enter with sound</button>
+        <button type="button" class="pre-btn mono" data-sound="off" data-cursor="ENTER">Enter in silence</button>
+        <p class="pre-note mono">Headphones recommended</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <header class="hud">
+    <a href="#intro" class="hud-logo" data-magnetic data-cursor="TOP">
+      <svg><use href="#bat" /></svg>
+      <span class="mono">W.D.W.F</span>
+    </a>
+    <button class="sound" type="button" data-magnetic aria-pressed="false" data-cursor="SOUND">
+      <span class="sound-bars"><i></i><i></i><i></i><i></i></span>
+      <span class="mono sound-text">SOUND OFF</span>
+    </button>
+  </header>
+
+  <nav class="chapters" aria-label="Chapters">
+    <a href="#intro" data-cursor="GO"><span class="mono">00</span><em>Prologue</em></a>
+    <a href="#fear" data-cursor="GO"><span class="mono">I</span><em>Fear</em></a>
+    <a href="#chaos" data-cursor="GO"><span class="mono">II</span><em>Chaos</em></a>
+    <a href="#rise" data-cursor="GO"><span class="mono">III</span><em>Rise</em></a>
+    <a href="#vengeance" data-cursor="GO"><span class="mono">IV</span><em>Vengeance</em></a>
+    <a href="#signal" data-cursor="GO"><span class="mono">∞</span><em>Signal</em></a>
+  </nav>
+
+  <div class="depth mono" aria-hidden="true">
+    <span class="depth-state">FALLING</span>
+    <span class="depth-value">-0000 M</span>
+  </div>
+
+  <main>
+    <!-- PROLOGUE -->
+    <section id="intro" class="intro" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="intro">
+      <div class="intro-bg intro-bg--dim" style="background-image:url(/images/intro/gotham-signal-skyline.webp)"></div>
+      <div class="intro-bg intro-bg--lit" style="background-image:url(/images/intro/gotham-signal-skyline.webp)"></div>
+      <div class="intro-content">
+        <p class="eyebrow mono">A tribute in four falls &amp; one rise</p>
+        <h1 class="title" aria-label="Why do we fall?">
+          <span class="title-line">Why do</span>
+          <span class="title-line">we fall?</span>
+        </h1>
+        <p class="intro-lede">Four Batman films. Four ways a man falls.<br />One reason he keeps getting back up.</p>
+        <p class="intro-hint mono">Move to search the dark. Click to scatter the bats.</p>
+      </div>
+      <div class="scroll-cue mono"><span>Scroll to fall</span><i></i></div>
+    </section>
+
+    <!-- INDEX: what this is, before the fall -->
+    <section id="index" class="index" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="intro" aria-labelledby="index-title">
+      <div class="index-head">
+        <p class="mono index-kicker">The index</p>
+        <h2 class="index-title" id="index-title">Four films.<br /><em>Four falls.</em></h2>
+        <p class="index-lede">Each chapter takes one film, one fall, and the idea that got him back up. Six minutes. Best with sound.</p>
+      </div>
+      <ol class="index-list">
+        <li><a href="#fear" data-img="/images/fear/batcave-bats.webp" data-cursor="FALL IN"><span class="ix-n">I</span><span class="ix-word">Fear</span><span class="ix-line">A boy falls down a well and meets the bats.</span><span class="ix-film">Batman Begins<small>2005 · Christopher Nolan</small></span></a></li>
+        <li><a href="#chaos" data-img="/images/chaos/joker-card.webp" data-cursor="FALL IN"><span class="ix-n">II</span><span class="ix-word">Chaos</span><span class="ix-line">A city falls to a man with a coin and a match.</span><span class="ix-film">The Dark Knight<small>2008 · Christopher Nolan</small></span></a></li>
+        <li><a href="#rise" data-img="/images/rise/pit-ledge.webp" data-cursor="FALL IN"><span class="ix-n">III</span><span class="ix-word">Rise</span><span class="ix-line">He falls from the pit wall twice. The third time, no rope.</span><span class="ix-film">The Dark Knight Rises<small>2012 · Christopher Nolan</small></span></a></li>
+        <li><a href="#vengeance" data-img="/images/vengeance/flare-flood.webp" data-cursor="FALL IN"><span class="ix-n">IV</span><span class="ix-word">Vengeance</span><span class="ix-line">He falls for his own anger, then chooses hope.</span><span class="ix-film">The Batman<small>2022 · Matt Reeves</small></span></a></li>
+      </ol>
+      <p class="index-fact"><span class="mono">On record</span> Heath Ledger's Joker won the Academy Award for Best Supporting Actor, awarded posthumously in 2009.</p>
+      <div class="index-preview" aria-hidden="true"><img alt="" /></div>
+    </section>
+
+    <!-- THE WELL -->
+    <section class="well" aria-label="The fall">
+      <div class="well-stage">
+        <img class="well-img" src="/images/fear/well-fall.webp" alt="Young Bruce Wayne falling into a well" />
+        <div class="shade well-shade"></div>
+        <div class="well-lines">
+          <p class="well-line">Gotham. A garden. A boy.</p>
+          <p class="well-line">The ground gives way.</p>
+          <p class="well-line well-line--big">And in the dark,<br />something wakes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- I · FEAR -->
+    <section id="fear" class="chapter fear" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="fear">
+      <header class="chapter-head">
+        <span class="chapter-num" aria-hidden="true">I</span>
+        <p class="chapter-meta mono">Chapter one <b>/</b> Batman Begins <b>/</b> 2005</p>
+        <h2 class="chapter-word" data-split>Fear</h2>
+      </header>
+
+      <figure class="cave">
+        <div class="cave-frame">
+          <img src="/images/fear/batcave-bats.webp" alt="Bruce standing in the cave as bats swarm into the light" loading="lazy" />
+        </div>
+        <figcaption class="mono">He went back down. Alone. And let them come.</figcaption>
+      </figure>
+
+      <blockquote class="quote" data-words>
+        <p>It's not who I am underneath, but what I do that defines me.</p>
+        <cite class="mono">Batman · Batman Begins</cite>
+      </blockquote>
+
+      <div class="moral">
+        <span class="moral-tag mono">The lesson</span>
+        <p>Fear isn't the enemy. It's the thing you learn to <em>wear</em>.</p>
+        <p class="moral-sub mono">"To conquer fear, you must become fear." · Ducard</p>
+      </div>
+    </section>
+
+    <!-- II · CHAOS -->
+    <section id="chaos" class="chapter chaos" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="chaos">
+      <header class="chapter-head chapter-head--right">
+        <span class="chapter-num" aria-hidden="true">II</span>
+        <p class="chapter-meta mono">Chapter two <b>/</b> The Dark Knight <b>/</b> 2008</p>
+        <h2 class="chapter-word" data-split>Chaos</h2>
+      </header>
+
+      <div class="serious">
+        <img src="/images/chaos/joker-closeup.webp" alt="The Joker staring into the camera" loading="lazy" />
+        <p class="glitch" data-text="WHY SO SERIOUS?">WHY SO SERIOUS?</p>
+      </div>
+
+      <div class="h-wrap">
+        <div class="h-track">
+          <article class="panel">
+            <div class="panel-img"><img src="/images/chaos/joker-card.webp" alt="The Joker holding his calling card" loading="lazy" /></div>
+            <div class="panel-text">
+              <span class="mono">01 / The agent of chaos</span>
+              <p>"Introduce a little anarchy. Upset the established order, and everything becomes chaos."</p>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-img"><img src="/images/chaos/hospital.webp" alt="The Joker walking away from Gotham General as it explodes" loading="lazy" /></div>
+            <div class="panel-text">
+              <span class="mono">02 / Gotham General</span>
+              <p>"Some men just want to watch the world burn." <small class="mono">· Alfred</small></p>
+            </div>
+          </article>
+          <article class="panel panel--twoface" data-cursor="SPLIT">
+            <div class="panel-img twoface">
+              <img class="twoface-bw" src="/images/chaos/two-face.webp" alt="Harvey Dent, half his face burned" loading="lazy" />
+              <img class="twoface-color" src="/images/chaos/two-face.webp" alt="" aria-hidden="true" loading="lazy" />
+              <span class="twoface-line"></span>
+            </div>
+            <div class="panel-text">
+              <span class="mono">03 / Harvey Dent · move across his face</span>
+              <p>"You thought we could be decent men in an indecent time."</p>
+            </div>
+          </article>
+          <article class="panel panel--coin">
+            <div class="coin-scene">
+              <div class="coin">
+                <div class="coin-face coin-front" style="background-image:url(/images/chaos/coin-clean.webp)"></div>
+                <div class="coin-face coin-back" style="background-image:url(/images/chaos/coin-scarred.webp)"></div>
+              </div>
+              <div class="coin-shadow"></div>
+            </div>
+            <div class="panel-text">
+              <span class="mono">04 / Heads, hero. Tails, villain.</span>
+              <p>"You either die a hero, or you live long enough to see yourself become the villain."</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="moral moral--pull">
+        <span class="moral-tag mono">The lesson</span>
+        <p>Chaos calls itself <em>fair</em>. It isn't. The only fair coin is the choice you make, again, every single day.</p>
+      </div>
+    </section>
+
+    <!-- III · RISE -->
+    <section id="rise" class="chapter rise" data-bg="#f2efe9" data-ink="#0b0b0c" data-accent="#c8102e" data-mood="rise">
+      <header class="chapter-head chapter-head--center">
+        <span class="chapter-num" aria-hidden="true">III</span>
+        <p class="chapter-meta mono">Chapter three <b>/</b> The Dark Knight Rises <b>/</b> 2012</p>
+        <h2 class="chapter-word" data-split>Rise</h2>
+      </header>
+
+      <div class="pit">
+        <div class="pit-stage">
+          <img class="pit-bg" src="/images/rise/pit-ledge.webp" alt="Bruce on a ledge inside the pit prison" loading="lazy" />
+          <div class="shade pit-shade"></div>
+          <div class="pit-light"></div>
+          <div class="chant" aria-hidden="true">
+            <p class="chant-row">Deshi basara · Deshi basara · Deshi basara · Deshi basara · Deshi basara ·</p>
+            <p class="chant-row">Deshi basara · Deshi basara · Deshi basara · Deshi basara · Deshi basara ·</p>
+            <p class="chant-row">Deshi basara · Deshi basara · Deshi basara · Deshi basara · Deshi basara ·</p>
+          </div>
+          <img class="pit-bruce" src="/images/rise/bruce.webp" alt="Bruce Wayne, bare-chested, ready to climb" loading="lazy" />
+          <div class="attempt">
+            <span class="attempt-label mono">Attempt 01</span>
+            <span class="attempt-state">With the rope</span>
+          </div>
+          <p class="pit-rise" aria-hidden="true">RISE</p>
+        </div>
+      </div>
+
+      <div class="collage">
+        <figure class="c-item c-1" data-speed="-12"><img src="/images/rise/climb.webp" alt="Climbing the pit wall" loading="lazy" /></figure>
+        <figure class="c-item c-2" data-speed="10"><img src="/images/rise/rope.webp" alt="Bruce gripping the rope" loading="lazy" /></figure>
+        <figure class="c-item c-3" data-speed="-22"><img src="/images/rise/batman-snow.webp" alt="Batman standing in the snow" loading="lazy" /></figure>
+        <blockquote class="quote quote--side" data-words>
+          <p>A hero can be anyone.</p>
+          <cite class="mono">Batman · The Dark Knight Rises</cite>
+        </blockquote>
+      </div>
+
+      <div class="moral moral--offset">
+        <span class="moral-tag mono">The lesson</span>
+        <p>The rope kept him safe, and it kept him down. Sometimes you climb only when you <em>stop holding on</em>.</p>
+      </div>
+    </section>
+
+    <!-- IV · VENGEANCE -->
+    <section id="vengeance" class="chapter vengeance" data-bg="#c8102e" data-ink="#0b0b0c" data-accent="#f2efe9" data-mood="vengeance">
+      <header class="chapter-head chapter-head--poster">
+        <img class="head-bg" src="/images/vengeance/poster.webp" alt="" aria-hidden="true" loading="lazy" />
+        <span class="chapter-num" aria-hidden="true">IV</span>
+        <p class="chapter-meta mono">Chapter four <b>/</b> The Batman <b>/</b> 2022</p>
+        <h2 class="chapter-word chapter-word--scramble" data-scramble="VENGEANCE">VENGEANCE</h2>
+      </header>
+
+      <div class="riddle mono">
+        <p class="riddle-label">// cipher intercepted · to the Bat</p>
+        <p class="riddle-line" data-scramble="WHAT DOES A LIAR DO WHEN HE'S DEAD?">WHAT DOES A LIAR DO WHEN HE'S DEAD?</p>
+        <p class="riddle-line riddle-answer" data-scramble="HE LIES STILL.">HE LIES STILL.</p>
+      </div>
+
+      <div class="grid board">
+        <figure class="shot s-1" style="--r:-2.2deg"><img src="/images/vengeance/flare-flood.webp" alt="Batman raising a red flare in the flooded arena" loading="lazy" /><figcaption>Exhibit A <b>The flare</b></figcaption></figure>
+        <figure class="shot s-2" style="--r:1.6deg"><img src="/images/vengeance/portrait-red.webp" alt="Batman in red smoke" loading="lazy" /><figcaption>Exhibit B <b>Red smoke</b></figcaption></figure>
+        <figure class="shot s-3" style="--r:-1deg"><img src="/images/vengeance/red-bats.webp" alt="Batman against a storm of red bats" loading="lazy" /><figcaption>Exhibit C <b>The swarm</b></figcaption></figure>
+        <figure class="shot s-4" style="--r:2.4deg"><img src="/images/vengeance/red-alley.webp" alt="Batman seen from behind in red light" loading="lazy" /><figcaption>Exhibit D <b>The alley</b></figcaption></figure>
+        <figure class="shot s-5" style="--r:-1.8deg"><img src="/images/vengeance/red-rain.webp" alt="Batman silhouetted in red rain" loading="lazy" /><figcaption>Exhibit E <b>The storm</b></figcaption></figure>
+      </div>
+
+      <div class="flare" data-cursor="FLARE">
+        <img class="flare-img" src="/images/vengeance/flare-street.webp" alt="Batman walking out of a burning street" loading="lazy" />
+        <div class="flare-light"></div>
+        <blockquote class="quote quote--flare" data-words>
+          <p>Vengeance won't change the past. Mine or anyone else's. I have to become more. People need hope.</p>
+          <cite class="mono">Batman · The Batman</cite>
+        </blockquote>
+      </div>
+
+      <div class="moral moral--slab">
+        <span class="moral-tag mono">The lesson</span>
+        <p>Anger can make you <em>feared</em>. Only hope makes you <em>needed</em>.</p>
+      </div>
+    </section>
+
+    <!-- ∞ · SIGNAL -->
+    <section id="signal" class="signal" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="signal">
+      <div class="signal-stage">
+        <div class="signal-sky" style="background-image:url(/images/outro/moon-signal.webp)"></div>
+        <img class="signal-roof" src="/images/outro/rooftop-rain.webp" alt="Batman crouched on a ledge in the rain" loading="lazy" />
+        <svg class="beam" aria-hidden="true"><defs><linearGradient id="beamGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff6d8" stop-opacity=".55" /><stop offset="1" stop-color="#fff6d8" stop-opacity=".04" /></linearGradient></defs><polygon points="0,0 0,0 0,0" fill="url(#beamGrad)" /></svg>
+        <div class="spot" aria-hidden="true"><svg><use href="#bat" /></svg></div>
+
+        <div class="signal-ui">
+          <p class="mono signal-eyebrow">Gotham needs a reason to look up</p>
+          <button class="ignite" type="button" data-magnetic data-cursor="LIGHT IT">Light the signal</button>
+        </div>
+
+        <div class="answer">
+          <p class="answer-q">Why do we fall?</p>
+          <p class="answer-a">So we can learn to<br />pick ourselves up.</p>
+          <cite class="mono">Thomas Wayne · Batman Begins</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAWN -->
+    <section class="dawn" data-bg="#0b0b0c" data-ink="#f2efe9" data-accent="#c8102e" data-mood="dawn">
+      <img class="dawn-img" src="/images/outro/rooftop-sunset.webp" alt="Batman watching the sun rise over Gotham" loading="lazy" />
+      <div class="shade dawn-shade"></div>
+      <div class="dawn-text">
+        <p data-words>The night is darkest just before the dawn. And I promise you, the dawn is coming.</p>
+        <cite class="mono">Harvey Dent · The Dark Knight</cite>
+      </div>
+    </section>
+
+    <!-- REEL -->
+    <section class="reel" aria-label="Image reel">
+      <div class="reel-track">
+        <img src="/images/intro/gotham-moon-glide.webp" alt="" loading="lazy" />
+        <img src="/images/fear/batcave-bats.webp" alt="" loading="lazy" />
+        <img src="/images/chaos/joker-card.webp" alt="" loading="lazy" />
+        <img src="/images/chaos/coin-art.webp" alt="" loading="lazy" />
+        <img src="/images/rise/pit-ledge.webp" alt="" loading="lazy" />
+        <img src="/images/vengeance/flare-flood.webp" alt="" loading="lazy" />
+        <img src="/images/outro/batmobile-gotham.webp" alt="" loading="lazy" />
+        <img src="/images/outro/moon-signal.webp" alt="" loading="lazy" />
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <p class="footer-big">Rise.</p>
+        <a href="#intro" class="again" data-magnetic data-cursor="TOP">Fall again <span aria-hidden="true">↑</span></a>
+      </div>
+      <div class="footer-grid mono">
+        <p>A non-commercial fan tribute. Not affiliated with DC, Warner Bros. Discovery, or Rocksteady. Batman and all related characters and imagery © their respective owners. Fan wallpapers belong to their original artists.</p>
+        <p>Designed &amp; built by Abdullah · 2026<br />Vite · GSAP · Lenis · Canvas · Web Audio</p>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
