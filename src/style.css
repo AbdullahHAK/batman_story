@@ -593,3 +593,92 @@ main { position: relative; z-index: 1; }
 .index-head { transition: opacity .5s var(--ease); }
 .index.is-previewing .index-head { opacity: .12; }
 .moral--slab { margin-top: 0; margin-bottom: -10vh; }
+
+/* =====================================================================
+   Story pass: scenes, Alfred, Florence, end credits
+   ===================================================================== */
+
+/* scenes reuse the well; shorter pin than the opening fall */
+.scene { height: 260vh; margin: 12vh 0; }
+.scene .well-stage { background: var(--black); }
+.scene .well-line { color: var(--bone); }
+.scene .well-line--big { width: min(94vw, 1320px); font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -.02em; font-size: clamp(32px, 4.6vw, 84px); line-height: 1.04; }
+
+/* Crime Alley: no photo, just the pearls under a single street light */
+.scene:has(.pearls) .well-stage {
+  background: radial-gradient(60% 70% at 50% 18%, rgba(242, 239, 233, .09), transparent 70%), var(--black);
+}
+.pearls { position: absolute; left: 50%; top: 34%; width: 0; height: 0; }
+.pearls i {
+  position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%; opacity: 0; will-change: transform;
+  background: radial-gradient(circle at 32% 30%, #fff 0%, #eae6dc 35%, #9d988e 100%);
+  box-shadow: 0 0 6px rgba(242, 239, 233, .35);
+}
+.scene:has(.pearls) .shade { display: none; }
+
+/* Bruce and Alfred */
+.exchange { max-width: 1300px; margin: -8vh auto 16vh; padding: 0 var(--gutter); display: grid; gap: 2vh; }
+.exchange-line { margin: 0; display: grid; grid-template-columns: 8em 1fr; align-items: baseline; font-size: clamp(26px, 3vw, 48px); line-height: 1.1; color: var(--muted); }
+.exchange-line .mono { font-size: .72rem; color: var(--muted); }
+.exchange-line--reply { color: var(--ink); font-style: italic; font-size: clamp(56px, 8vw, 150px); line-height: 1; }
+.exchange-line--reply .mono { color: var(--accent); }
+
+/* Gordon gets the right-hand side to break the rhythm */
+.quote--gordon { margin-left: auto; margin-right: var(--gutter); max-width: 1100px; text-align: right; }
+
+/* explains the chant */
+.chant-note {
+  position: absolute; z-index: 3; top: 15vh; right: var(--gutter); margin: 0; max-width: 24ch; text-align: right;
+  color: color-mix(in srgb, var(--bone) 75%, transparent); line-height: 1.8;
+}
+.chant-note i { font-style: normal; color: var(--red); }
+.chant-note b { color: var(--bone); font-weight: 700; }
+
+/* the signal speaks first */
+.signal-eyebrow { max-width: 30ch; font-family: var(--serif); font-style: italic; font-size: clamp(22px, 2.2vw, 34px); line-height: 1.2; color: var(--ink); }
+.signal-eyebrow cite { display: block; margin-top: 12px; font-style: normal; color: var(--muted); }
+
+/* Florence: the trilogy's real ending, quiet and slow */
+.florence {
+  position: relative; padding: 26vh var(--gutter) 22vh;
+  background: radial-gradient(70% 60% at 80% 100%, rgba(255, 179, 107, .08), transparent 70%);
+}
+.florence-kicker { margin: 0 0 5vh; color: var(--muted); }
+.florence-kicker::before { content: ""; display: inline-block; width: 28px; height: 1px; margin-right: 12px; background: var(--accent); vertical-align: middle; }
+.florence-speech { margin: 0; max-width: 1180px; }
+.florence-speech p { margin: 0; font-size: clamp(28px, 3.6vw, 62px); line-height: 1.16; letter-spacing: -.01em; }
+.florence-speech .word { opacity: .12; }
+.florence-coda { margin: 12vh 0 0 auto; max-width: 30ch; text-align: right; font-size: clamp(20px, 1.7vw, 28px); line-height: 1.4; color: var(--muted); }
+.florence-coda em { color: var(--ink); }
+
+/* End credits: a slow roll, the thing you leave with */
+.credits { padding: 18vh var(--gutter) 24vh; text-align: center; }
+.credits-title {
+  margin: 0 0 12vh; display: grid; justify-items: center; gap: 2vh;
+  font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(34px, 4vw, 68px); letter-spacing: -.02em;
+}
+.credits-title .mono { font-style: normal; color: var(--muted); }
+.credits-roll { margin: 0 auto; max-width: 1000px; display: grid; gap: 7vh; }
+.credits-roll div { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; align-items: baseline; }
+.credits-roll dt { text-align: right; font-family: var(--sans); font-weight: 500; font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.credits-roll dd { margin: 0; text-align: left; font-family: var(--serif); font-size: clamp(22px, 2vw, 32px); line-height: 1.2; }
+.credits-last {
+  margin: 18vh 0 0; font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: -.03em; word-spacing: .14em;
+  font-size: clamp(38px, 5.6vw, 100px); line-height: .95;
+}
+.credits-last em { display: block; margin-top: .25em; font-family: var(--serif); font-weight: 400; text-transform: none; letter-spacing: -.02em; color: var(--accent); }
+
+@media (max-width: 900px) {
+  .exchange-line { grid-template-columns: 1fr; gap: 6px; }
+  .quote--gordon { text-align: left; margin-right: auto; }
+  .chant-note { top: 11vh; }
+  .florence-coda { text-align: left; margin-left: 0; }
+  .credits-roll div { grid-template-columns: 1fr; gap: 8px; }
+  .credits-roll dt, .credits-roll dd { text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene { height: auto; }
+  .florence-speech .word { opacity: 1 !important; }
+  .pearls i { opacity: 1; }
+}

@@ -36,7 +36,7 @@ const entered = new Set(); // chapters that already played their opening braam
 initCursor();
 
 $$(".title-line, [data-split]").forEach(splitChars);
-$$(".quote p, .dawn-text p").forEach(splitWords);
+$$(".quote p, .dawn-text p, .florence-speech p").forEach(splitWords);
 $$("[data-scramble]").forEach((el) => (el.textContent = garble(el.dataset.scramble)));
 
 /* ---------- sound ---------- */
@@ -247,27 +247,52 @@ function buildScenes() {
     list.addEventListener("pointerleave", () => gsap.to(preview, { opacity: 0, scale: 0.85, duration: 0.4, ease: "power2.in" }));
   }
 
-  /* --- THE WELL: zoom into darkness --- */
-  const lines = $$(".well-line");
-  gsap.set(lines, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
-  const well = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".well", start: "top top", end: "bottom bottom", scrub: 1,
-      onUpdate: (s) => score.setFall(s.progress),
-      onLeave: () => {
-        bats.burst(innerWidth / 2, innerHeight + 30, 70, "up");
-        score.setFall(0);
-        score.impact(1.3);
+  /* --- SCENES: pinned film moments narrated line by line (the well is the first) --- */
+  $$(".well").forEach((scene) => {
+    const isWell = !scene.classList.contains("scene");
+    const lines = scene.querySelectorAll(".well-line");
+    gsap.set(lines, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: scene, start: "top top", end: "bottom bottom", scrub: 1,
+        onUpdate: isWell ? (s) => score.setFall(s.progress) : undefined,
+        onLeave: () => {
+          if (isWell) {
+            bats.burst(innerWidth / 2, innerHeight + 30, 70, "up");
+            score.setFall(0);
+          }
+          score.impact(isWell ? 1.3 : 0.9);
+        },
+        onLeaveBack: isWell ? () => score.setFall(0) : undefined,
       },
-      onLeaveBack: () => score.setFall(0),
-    },
-  });
-  well.fromTo(".well-img", { scale: 1 }, { scale: 3.4, ease: "power1.in", duration: 1 }, 0);
-  well.fromTo(".well-shade", { opacity: 0.1 }, { opacity: 1, ease: "power1.in", duration: 1 }, 0);
-  lines.forEach((line, i) => {
-    const at = 0.06 + i * 0.3;
-    well.fromTo(line, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.1 }, at);
-    if (i < lines.length - 1) well.to(line, { opacity: 0, y: -50, duration: 0.1 }, at + 0.2);
+    });
+    const img = scene.querySelector(".well-img");
+    if (img) tl.fromTo(img, { scale: isWell ? 1 : 1.12 }, { scale: isWell ? 3.4 : 1.45, ease: isWell ? "power1.in" : "none", duration: 1 }, 0);
+    tl.fromTo(scene.querySelector(".well-shade"), { opacity: isWell ? 0.1 : 0.45 }, { opacity: isWell ? 1 : 0.85, ease: "power1.in", duration: 1 }, 0);
+    lines.forEach((line, i) => {
+      const at = 0.06 + i * 0.3;
+      tl.fromTo(line, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.1 }, at);
+      if (i < lines.length - 1) tl.to(line, { opacity: 0, y: -50, duration: 0.1 }, at + 0.2);
+    });
+
+    // Crime Alley: the pearls break and scatter as the second line lands
+    const pearls = scene.querySelector(".pearls");
+    if (pearls) {
+      for (let i = 0; i < 46; i++) {
+        const p = document.createElement("i");
+        p.style.setProperty("--s", (4 + Math.random() * 7).toFixed(1) + "px");
+        pearls.append(p);
+      }
+      const dots = pearls.querySelectorAll("i");
+      tl.fromTo(dots,
+        { x: 0, y: 0, opacity: 0 },
+        {
+          x: () => gsap.utils.random(-0.46, 0.46) * innerWidth,
+          y: () => gsap.utils.random(0.3, 0.52) * innerHeight,
+          rotate: () => gsap.utils.random(-360, 360),
+          opacity: 1, duration: 0.22, ease: "power2.in", stagger: { amount: 0.06, from: "random" },
+        }, 0.34);
+    }
   });
 
   /* --- chapter headers --- */
@@ -298,7 +323,7 @@ function buildScenes() {
     .fromTo(".cave-frame img", { yPercent: -16 }, { yPercent: 0, ease: "none", duration: 1 }, 0);
 
   /* --- quotes light up word by word --- */
-  $$(".quote, .dawn-text").forEach((q) =>
+  $$(".quote, .dawn-text, .florence-speech").forEach((q) =>
     gsap.to(q.querySelectorAll(".word"), {
       opacity: 1, stagger: 0.1, ease: "none",
       scrollTrigger: { trigger: q, start: "top 80%", end: "bottom 50%", scrub: true },
@@ -473,6 +498,16 @@ function buildScenes() {
   gsap.fromTo(".dawn-img", { scale: 1.35 }, {
     scale: 1, ease: "none",
     scrollTrigger: { trigger: ".dawn", start: "top bottom", end: "bottom bottom", scrub: true },
+  });
+
+  /* --- end credits roll in, one line at a time --- */
+  gsap.from(".credits-title, .credits-roll div, .credits-last", {
+    opacity: 0, y: 70, duration: 1.6, ease: "expo.out", stagger: 0.18,
+    scrollTrigger: { trigger: ".credits", start: "top 70%" },
+  });
+  gsap.from(".florence-coda", {
+    opacity: 0, y: 30, duration: 2, ease: "power2.out",
+    scrollTrigger: { trigger: ".florence-coda", start: "top 85%" },
   });
 
   /* --- footer --- */
