@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { scramble } from "./scramble.js";
 
-const CRITICAL = ["/images/intro/gotham-signal-skyline.webp", "/images/fear/well-fall.webp"];
+const CRITICAL = ["images/intro/gotham-signal-skyline.webp", "images/fear/well-fall.webp"];
 
 const loadImage = (src) =>
   new Promise((resolve) => {

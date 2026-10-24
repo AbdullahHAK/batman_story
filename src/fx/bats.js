@@ -14,9 +14,9 @@ const MAX_SPEED = 900;
 // anything above it belongs to the wings, even inside the body strip.
 // Side-view bats can't hinge convincingly, so they aren't used.
 const SPRITES = [
-  { src: "/images/bats/bat-2.webp", cx: 0.509, shoulderY: 0.36, body: 0.1, swing: 0.65, rest: 0.05 },
-  { src: "/images/bats/bat-3.webp", cx: 0.499, shoulderY: 0.5, body: 0.088, swing: 0.65, rest: 0.05 },
-  { src: "/images/bats/bat-4.webp", cx: 0.389, shoulderY: 0.7, body: 0.12, swing: 0.5, rest: -0.22, headTop: 0.46 },
+  { src: "images/bats/bat-2.webp", cx: 0.509, shoulderY: 0.36, body: 0.1, swing: 0.65, rest: 0.05 },
+  { src: "images/bats/bat-3.webp", cx: 0.499, shoulderY: 0.5, body: 0.088, swing: 0.65, rest: 0.05 },
+  { src: "images/bats/bat-4.webp", cx: 0.389, shoulderY: 0.7, body: 0.12, swing: 0.5, rest: -0.22, headTop: 0.46 },
 ];
 const SPRITE_W = 160; // pre-rendered width of each glow sprite
 const GLOW_PAD = 26;
